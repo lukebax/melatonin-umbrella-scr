@@ -22,9 +22,6 @@ adverse_events = T_data_extraction.ae_events_std;
 
 adverse_events = multiple_entries_to_vector(adverse_events);
 
-adverse_events = strrep(adverse_events, "diarrhoea", "gastrointestinal problems");
-adverse_events = strrep(adverse_events, "depression/mood changes", "mood changes");
-
 adverse_events(strcmp(adverse_events, "not listed")) = [];
 adverse_events(strcmp(adverse_events, "not recorded")) = [];
 
@@ -58,13 +55,13 @@ set(gcf,...
 subplot(1,2,1)
 
 barh(adverse_events_unique, adverse_events_counts, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel("Number of reviews")
+xlabel("Number of Reviews")
 ax = gca;
 ax.FontSize = axis_font_size;
 
 subplot(1,2,2)
 barh(adverse_events_unique, adverse_events_counts_pct, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel("Percent of reviews")
+xlabel("Percent of Reviews")
 xlim([0,100])
 ax = gca;
 ax.FontSize = axis_font_size;

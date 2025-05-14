@@ -176,20 +176,20 @@ set(gcf,...
 
 subplot(4,3,1)
 bar(x, sq_quantity_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Sleep quantity')
+xlabel('Sleep Quantity')
 ylabel('Meta-analyses (count)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
 subplot(4,3,2)
 bar(x, sq_initiation_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Sleep initiation')
+xlabel('Sleep Initiation')
 ax = gca;
 ax.FontSize = axis_font_size;
 
 subplot(4,3,3)
 bar(x, sq_maintenance_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Sleep maintenance')
+xlabel('Sleep Maintenance')
 ax = gca;
 ax.FontSize = axis_font_size;
 
@@ -239,14 +239,14 @@ ax.FontSize = axis_font_size;
 
 subplot(4,3,10)
 bar(x, condition_child_neurodev_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Neurodevelopmental disorders (children)')
+xlabel('Neurodevelopmental Disorders (children)')
 ylabel('Meta-analyses (count)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
 subplot(4,3,11)
 bar(x, condition_adult_primary_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Primary sleep disorders (adults)')
+xlabel('Primary Sleep Disorders (adults)')
 ax = gca;
 ax.FontSize = axis_font_size;
 

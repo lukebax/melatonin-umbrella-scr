@@ -103,8 +103,8 @@ ax.FontSize = axis_font_size;
 
 subplot(2,2,3)
 bar(all_quality_counts2, quality_counts2_counts, 'EdgeColor', plot_colour, 'FaceColor', plot_colour, 'FaceAlpha', 1)
-xlabel("Number of systematic review criteria")
-ylabel("Number of reviews")
+xlabel("Number of Systematic Review Criteria")
+ylabel("Number of Reviews")
 ax = gca;
 ax.FontSize = axis_font_size;
 
