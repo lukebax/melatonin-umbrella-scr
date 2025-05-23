@@ -139,6 +139,7 @@ ax = gca;
 ax.FontSize = axis_font_size;
 
 subplot(2,2,3)
+age_unique(strcmp(age_unique, 'Elderly')) = {'Older adults'};
 barh(age_unique, age_counts_pct, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 set(gca,'TickLabelInterpreter','none')
 xlabel("Percent of Meta-analyses")

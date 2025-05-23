@@ -231,7 +231,7 @@ ax.FontSize = axis_font_size;
 
 subplot(4,3,9)
 bar(x, age_elderly_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Elderly (>65 years)')
+xlabel('Older adults (>65 years)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
@@ -252,7 +252,7 @@ ax.FontSize = axis_font_size;
 
 subplot(4,3,12)
 bar(x, condition_elderly_dementia_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Dementia (elderly)')
+xlabel('Dementia (older adults)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
