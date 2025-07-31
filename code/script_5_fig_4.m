@@ -6,27 +6,36 @@ idx_inactive = strcmp(string(T.c_broad), "Inactive");
 
 T = T(idx_inactive,:);
 
-plot_colour = '#4b8ac4';
-
 Direction = T.r_direction;
 
 SleepQuality = T.o_sq_broad;
 Dose = T.i_dose_broad;
 Age = T.p_age_broad;
-Condition = T.p_condition_broad;
 
-T2 = table(Direction, SleepQuality, Dose, Age, Condition);
+T2 = table(Direction, SleepQuality, Dose, Age);
+
+%% plotting variable
+
+plot_colour = '#4b8ac4';
 
 x = ["Positive", "Negative", "Unclear"];
 
 fig_size_x = 14;
-fig_size_y = 12;
+fig_size_y = 9;
 
 section_labels_x = 0.062;
-section_labels_y = [0.95, 0.73, 0.51, 0.29];
+section_labels_y = [0.95, 0.65, 0.35];
 section_labels_fontsize = 15;
 
 axis_font_size = 12;
+
+%% overall
+
+pos = sum(strcmp(T2.Direction, 'Favours melatonin'));
+neg = sum(strcmp(T2.Direction, 'Favours control/comparator'));
+
+table_overall = table([pos; neg], 'VariableNames', {'Count'});
+table_overall.Properties.RowNames = {'positive'; 'negative'};
 
 %% sleep quality
 
@@ -123,44 +132,12 @@ table_age = table(children, adults, elderly);
 table_age.Properties.RowNames = ["positive"; "negative"];
 
 
-%% condition
+%% export spreadsheet
 
-var = 'Condition';
-
-% child_neurodev
-val = 'child_neurodev';
-pos = sum(sum([strcmp(T2.Direction, 'Favours melatonin'), strcmp(T2.(var), val)], 2) == 2);
-neg = sum(sum([strcmp(T2.Direction, 'Favours control/comparator'), strcmp(T2.(var), val)], 2) == 2);
-unc = sum(sum([strcmp(T2.Direction, 'Unclear'), strcmp(T2.(var), val)], 2) == 2);
-condition_child_neurodev_y = [pos, neg, unc];
-
-% adult_primary
-val = 'adult_primary';
-pos = sum(sum([strcmp(T2.Direction, 'Favours melatonin'), strcmp(T2.(var), val)], 2) == 2);
-neg = sum(sum([strcmp(T2.Direction, 'Favours control/comparator'), strcmp(T2.(var), val)], 2) == 2);
-unc = sum(sum([strcmp(T2.Direction, 'Unclear'), strcmp(T2.(var), val)], 2) == 2);
-condition_adult_primary_y = [pos, neg, unc];
-
-% elderly_dementia
-val = 'elderly_dementia';
-pos = sum(sum([strcmp(T2.Direction, 'Favours melatonin'), strcmp(T2.(var), val)], 2) == 2);
-neg = sum(sum([strcmp(T2.Direction, 'Favours control/comparator'), strcmp(T2.(var), val)], 2) == 2);
-unc = sum(sum([strcmp(T2.Direction, 'Unclear'), strcmp(T2.(var), val)], 2) == 2);
-condition_elderly_dementia_y = [pos, neg, unc];
-
-neurodev = condition_child_neurodev_y([1,2])';
-primary = condition_adult_primary_y([1,2])';
-dementia = condition_elderly_dementia_y([1,2])';
-table_condition = table(neurodev, primary, dementia);
-table_condition.Properties.RowNames = ["positive"; "negative"];
-
-
-%%
-
+writetable(table_overall,'../results/efficacy_tables.xlsx','Sheet','overall',"WriteRowNames",true)
 writetable(table_sleep_quality,'../results/efficacy_tables.xlsx','Sheet','sleep_quality',"WriteRowNames",true)
 writetable(table_dose,'../results/efficacy_tables.xlsx','Sheet','dose',"WriteRowNames",true)
 writetable(table_age,'../results/efficacy_tables.xlsx','Sheet','age',"WriteRowNames",true)
-writetable(table_condition,'../results/efficacy_tables.xlsx','Sheet','condition',"WriteRowNames",true)
 
 
 %% make figure
@@ -174,20 +151,20 @@ set(gcf,...
 
 % sleep quality
 
-subplot(4,3,1)
+subplot(3,3,1)
 bar(x, sq_quantity_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Sleep Quantity')
 ylabel('Meta-analyses (count)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,2)
+subplot(3,3,2)
 bar(x, sq_initiation_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Sleep Initiation')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,3)
+subplot(3,3,3)
 bar(x, sq_maintenance_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Sleep Maintenance')
 ax = gca;
@@ -195,20 +172,20 @@ ax.FontSize = axis_font_size;
 
 % dose
 
-subplot(4,3,4)
+subplot(3,3,4)
 bar(x, dose_low_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Low (0.1-3mg)')
 ylabel('Meta-analyses (count)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,5)
+subplot(3,3,5)
 bar(x, dose_medium_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Medium (3-5mg)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,6)
+subplot(3,3,6)
 bar(x, dose_high_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('High (5mg and higher)')
 ax = gca;
@@ -216,43 +193,22 @@ ax.FontSize = axis_font_size;
 
 % age
 
-subplot(4,3,7)
+subplot(3,3,7)
 bar(x, age_children_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Children (0-18 years)')
 ylabel('Meta-analyses (count)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,8)
+subplot(3,3,8)
 bar(x, age_adults_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Adults (>18 years)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
-subplot(4,3,9)
+subplot(3,3,9)
 bar(x, age_elderly_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
 xlabel('Older adults (>65 years)')
-ax = gca;
-ax.FontSize = axis_font_size;
-
-% condition
-
-subplot(4,3,10)
-bar(x, condition_child_neurodev_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Neurodevelopmental Disorders (children)')
-ylabel('Meta-analyses (count)')
-ax = gca;
-ax.FontSize = axis_font_size;
-
-subplot(4,3,11)
-bar(x, condition_adult_primary_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Primary Sleep Disorders (adults)')
-ax = gca;
-ax.FontSize = axis_font_size;
-
-subplot(4,3,12)
-bar(x, condition_elderly_dementia_y, 'EdgeColor', plot_colour, 'FaceColor', plot_colour)
-xlabel('Dementia (older adults)')
 ax = gca;
 ax.FontSize = axis_font_size;
 
@@ -263,9 +219,6 @@ a = annotation('textbox', [section_labels_x(1), section_labels_y(2), 0, 0], 'str
 a.FontSize = section_labels_fontsize;
 
 a = annotation('textbox', [section_labels_x(1), section_labels_y(3), 0, 0], 'string', 'c.');
-a.FontSize = section_labels_fontsize;
-
-a = annotation('textbox', [section_labels_x(1), section_labels_y(4), 0, 0], 'string', 'd.');
 a.FontSize = section_labels_fontsize;
 
 exportgraphics(gcf,'../results/figure_4.pdf')

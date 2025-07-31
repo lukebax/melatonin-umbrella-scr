@@ -3,6 +3,12 @@ library(readxl)
 
 # load data ---------------------------------------------------------------
 
+# Read 'overall' sheet and set first column as row names
+table_overall <- read_excel("../results/efficacy_tables.xlsx", sheet = "overall")
+table_overall <- as.data.frame(table_overall)
+rownames(table_overall) <- table_overall[[1]]
+table_overall[[1]] <- NULL
+
 # Read 'sleep_quality' sheet and set first column as row names
 table_sleep_quality <- read_excel("../results/efficacy_tables.xlsx", sheet = "sleep_quality")
 table_sleep_quality <- as.data.frame(table_sleep_quality)
@@ -21,11 +27,17 @@ table_age <- as.data.frame(table_age)
 rownames(table_age) <- table_age[[1]]
 table_age[[1]] <- NULL
 
-# Read 'condition' sheet and set first column as row names
-table_condition <- read_excel("../results/efficacy_tables.xlsx", sheet = "condition")
-table_condition <- as.data.frame(table_condition)
-rownames(table_condition) <- table_condition[[1]]
-table_condition[[1]] <- NULL
+# Overall -----------------------------------------------------------------
+
+# Extract positive and negative counts
+positive_count <- table_overall["positive", "Count"]
+negative_count <- table_overall["negative", "Count"]
+
+# Total number of studies
+n <- positive_count + negative_count
+
+# Run sign test (two-sided binomial test under null: p = 0.5)
+sign_res_overall <- binom.test(x = positive_count, n = n, p = 0.5, alternative = "two.sided")
 
 # Sleep quality -----------------------------------------------------------
 
@@ -57,20 +69,11 @@ fisher_res_age_children_vs_adults <- fisher.test(table_age[, c("children", "adul
 fisher_res_age_children_vs_elderly <- fisher.test(table_age[, c("children", "elderly")])
 fisher_res_age_adults_vs_elderly <- fisher.test(table_age[, c("adults", "elderly")])
 
-# Condition ---------------------------------------------------------------
-
-# Global Fisher’s Exact Test
-fisher_res_condition <- fisher.test(table_condition)
-
-# Pairwise Fisher’s Exact Tests
-fisher_res_condition_neurodev_vs_primary <- fisher.test(table_condition[, c("neurodev", "primary")])
-fisher_res_condition_neurodev_vs_dementia <- fisher.test(table_condition[, c("neurodev", "dementia")])
-fisher_res_condition_primary_vs_dementia <- fisher.test(table_condition[, c("primary", "dementia")])
-
 # print global test results -----------------------------------------------
 
 # These four results will print to the R console
+sign_res_overall
 fisher_res_sleep_quality
 fisher_res_dose
 fisher_res_age
-fisher_res_condition
+
